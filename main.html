@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/www/name.'www_iframe.css') }}"/>
+    <link rel="shortcut icon" href="https://static-fin-gslb.nhnent.com/payco/bill/favicon.ico"/>
+    <script src="{{ url_for('static', filename='/static/lib/js/name.'html2canvas.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/lib/js/name.'jquery.3.4.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
+</head>
+<body style="width:480px;min-width:0">
+<div class="pop pop_account" id="sendMoneyDetail">
+    <div class="pop_header">
+        <h1 class="ly_tit"><span class="ly_logo_tit"><img src="{{ url_for('static', filename='img/www/name.'bg_check_title.png') }}" alt="페이코"></span>송금확인증</h1>
+    </div>
+    <div class="ly_content">
+        <div class="ly_table">
+            <table>
+                <caption class="blind">송금확인증</caption>
+                <thead class="blind">
+                <tr>
+                    <th>제목</th>
+                    <th>내용</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>이체 일시</th>
+                    <td>
+                        <span class="date"
+                              id="detailDate">{{ date }}</span>
+                    </td>
+                </tr>
+                <tr class="is_vertical_top">
+                    <th>출금 계좌</th>
+                    <td>
+                        <ul class="account_info">
+                            <li class="info_txt" id="detailSenderName">{{ sname }}</li>
+                            <li class="info_txt"id="detailSendAccountNo">{{ sendaccount }}</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="is_vertical_top">
+                    <th>입금 계좌</th>
+                    <td>
+                        <ul class="account_info">
+                            <li class="info_txt" id="detailReceiverName">{{ rname }}</li>
+                            <li class="info_txt"
+                                id="detailReceiverAccountNo">{{ receiveaccount }}</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>받는분 통장표시</th>
+                    <td>
+                        <span id="detailSenderMessage">
+                            {{ sname }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>송금 금액</th>
+                    <td>
+                        <span class="send_money" id="detailSendAmount">{{ amount }} 원</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>송금 수수료</th>
+                    <td>
+                        <span class="send_comm" id="detailSendFeeAmount">0 원</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="ly_footer">
+        <p class="notice_txt">본 송금 확인증은 고객 편의를 위하여 제공되는 것으로<br>거래의 참고용으로만 사용할 수 있습니다.</p>
+        <span class="ly_btn_area ly_btn_down" data-html2canvas-ignore="true">
+			<a href="javascript:;" onclick="downloadPage(); return false;" class="btn_ly">저장하기</a>
+		</span>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        window.resizeTo(600, 1000);
+    });
+    function downloadPage() {
+        html2canvas(document.getElementById('sendMoneyDetail'), { logging: true, letterRendering: 1,allowTaint: false, useCORS: true }).then(function (canvas) {
+            var agent = navigator.userAgent.toLowerCase();
+            if (canvas.msToBlob) {
+                // ie일 경우
+                window.navigator.msSaveBlob(canvas.msToBlob(), '2023.05.2608:01' + '.jpeg');
+            } else {
+                // ie가 아닐 경우
+                var imageUrl = canvas.toDataURL();
+
+                var html = '<a id="downloadImage" download="2023.05.2608:01' + '.jpeg' +
+                    '" href=' + imageUrl + ' style="display:none"></a>';
+
+                $('#sendMoneyDetail').remove('#downloadImage');
+
+                $('#sendMoneyDetail').append(html);
+                $('#downloadImage').get(0).click();
+            }
+        });
+    }
+</script>
+</html>
